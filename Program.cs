@@ -78,14 +78,5 @@ namespace XCatTool
                 }
             }
         }
-
-        private string GetInputFilename(string[] args)
-        {
-            var filename = args[0];
-            if (filename.EndsWith(".cat") || filename.EndsWith(".dat"))
-                filename = filename.Substring(0, filename.Length - 4);
-
-            return filename;
-        }
     }
 }
