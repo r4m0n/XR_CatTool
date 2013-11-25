@@ -12,40 +12,40 @@ namespace XCatTool
 
         static void Main(string[] args)
         {
-            string[] cat = File.ReadAllLines(args[0] + ".cat");
-            FileStream dat = File.OpenRead(args[0] + ".dat");
-            byte[] buff = new byte[BUFFSIZE];
+            var catFileContents = File.ReadAllLines(args[0] + ".cat");
+            var datFileStream = File.OpenRead(args[0] + ".dat");
+            var buffer = new byte[BUFFSIZE];
 
-            foreach (string l in cat)
+            foreach (var line in catFileContents)
             {
-                List<string> pcs = l.Split(' ').ToList();
-                if (pcs.Count >= 4)
+                var pieces = line.Split(' ').ToList();
+                if (pieces.Count >= 4)
                 {
-                    while (pcs.Count > 4)
+                    while (pieces.Count > 4)
                     {
-                        pcs[0] = pcs[0] + pcs[1];
-                        pcs.RemoveAt(1);
+                        pieces[0] = pieces[0] + pieces[1];
+                        pieces.RemoveAt(1);
                     }
-                    if (!string.IsNullOrWhiteSpace(Path.GetDirectoryName(pcs[0])) && !Directory.Exists(Path.GetDirectoryName(pcs[0])))
+                    if (!string.IsNullOrWhiteSpace(Path.GetDirectoryName(pieces[0])) && !Directory.Exists(Path.GetDirectoryName(pieces[0])))
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(pcs[0]));
+                        Directory.CreateDirectory(Path.GetDirectoryName(pieces[0]));
                     }
-                    FileStream of = File.OpenWrite(pcs[0]);
-                    int remBytes = int.Parse(pcs[1]);
+                    FileStream of = File.OpenWrite(pieces[0]);
+                    int remBytes = int.Parse(pieces[1]);
                     while (remBytes > 0)
                     {
-                        int br = dat.Read(buff, 0, Math.Min(BUFFSIZE, remBytes));
-                        of.Write(buff, 0, br);
+                        int br = datFileStream.Read(buffer, 0, Math.Min(BUFFSIZE, remBytes));
+                        of.Write(buffer, 0, br);
                         remBytes -= br;
                     }
                     of.Close();
                 }
                 else
                 {
-                    Console.WriteLine("Invalid line, contents: " + l);
+                    Console.WriteLine("Invalid line, contents: " + line);
                 }
             }
-            dat.Close();
+            datFileStream.Close();
         }
     }
 }
