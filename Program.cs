@@ -17,7 +17,7 @@ namespace XCatTool
 
         public Program(string[] args)
         {
-            if (args.Length != 0)
+            if (args.Length != 1)
             {
                 Console.WriteLine("Usage: XCatTool.exe <catfilename>");
                 return;
