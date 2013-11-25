@@ -43,8 +43,15 @@ namespace XCatTool
             {
                 var buffer = new byte[BUFFER_SIZE];
 
+                var totalLines = (float)catFileContents.Length;
+                var currentLine = 0.0;
+
+                Console.WriteLine("Extracting...\t");
+                Console.CursorVisible = false;
+
                 foreach (var line in catFileContents)
                 {
+                    WriteInPlace("Line {0}/{1}", ++currentLine, totalLines);
                     var pieces = line.Split(' ').ToList();
                     if (pieces.Count >= 4)
                     {
@@ -76,7 +83,20 @@ namespace XCatTool
                         Console.WriteLine("Invalid line, contents: " + line);
                     }
                 }
+
+                Console.CursorVisible = true;
+                Console.WriteLine("Done");
             }
+        }
+
+        private void WriteInPlace(string text, params object[] args)
+        {
+            var currentX = Console.CursorLeft;
+            var currentY = Console.CursorTop;
+
+            Console.Write(text, args);
+
+            Console.SetCursorPosition(currentX, currentY);
         }
     }
 }
